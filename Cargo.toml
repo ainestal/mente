@@ -5,6 +5,14 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bin]]
+name = "talk"
+path = "bin/talk.rs"
+
+[[bin]]
+name = "mental_chatter"
+path = "bin/mental_chatter.rs"
+
 [dependencies]
 anyhow = { version = "1.0", features = ["std"] }
 dotenv = "0.15"

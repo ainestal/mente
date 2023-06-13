@@ -48,37 +48,27 @@ pub struct ChatResponse {
 
 pub struct ChatGPT {
     client: reqwest::Client,
-    pub context: ChatContext,
     openai_api_token: String,
     pub session_id: String,
-    pub model: String,
 }
 
 impl ChatGPT {
-    pub fn new(openai_api_token: String, session_id: String, model: String) -> Result<ChatGPT> {
+    pub fn new(openai_api_token: String, session_id: String) -> Result<ChatGPT> {
         let client = reqwest::Client::new();
-        let context = ChatContext::new(model.clone());
         Ok(ChatGPT {
             client,
-            context,
             openai_api_token,
             session_id,
-            model,
         })
     }
 
-    pub async fn completion(&mut self, input: String) -> Result<Message> {
-        self.context.push(Message {
-            role: "user".to_string(),
-            content: input,
-        });
-
+    pub async fn completion(&mut self, chat_context: &ChatContext) -> Result<Message> {
         let response = self
             .client
             .post(URL)
             .bearer_auth(&self.openai_api_token)
             .header("Content-Type", "application/json")
-            .json(&self.context)
+            .json(&chat_context)
             .send()
             .await
             .context(format!("Failed to receive the response from {}", URL))?
