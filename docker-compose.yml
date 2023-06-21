@@ -14,7 +14,7 @@ services:
       - ./db/:/docker-entrypoint-initdb.d/
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     ports:
       - 5433:80
     env_file:
